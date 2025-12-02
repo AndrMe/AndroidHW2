@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">HW2</string>
+
+
+    <string name="additionalLoadFailure">Additianal Loading Failed</string>
+    <string name="initialLoadFailure">Loading Failed</string>
+    <string name="initialLoadDesc">Error</string>
+    <string name="reloadText">Retry?</string>
+    <string name="TopBar">Loaded: %d</string>
+    <string name="uiErrorMsg">Error</string>
+
+
 </resources>

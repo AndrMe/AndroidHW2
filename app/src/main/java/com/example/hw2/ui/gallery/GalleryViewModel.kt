@@ -16,7 +16,8 @@ sealed interface GalleryUiState {
 
     data class Success(
         val photos: List<GiphyImage>,
-        val isLoadingMore: Boolean = false
+        val isLoadingMore: Boolean = false,
+        val loadingFailed: Boolean = false
     ) : GalleryUiState
 
     data class Error(val message: String) : GalleryUiState
@@ -70,14 +71,17 @@ class GalleryViewModel: ViewModel(){
 
                 UiState = state.copy(
                     photos = state.photos + data.data,
-                    isLoadingMore = false
+                    isLoadingMore = false,
+                    loadingFailed = false
                 )
 
             } catch (e: Exception) {
                 UiState = state.copy(isLoadingMore = false)
+                if (UiState is GalleryUiState.Success){
+                    UiState = state.copy(loadingFailed = true)
+                }
+
             }
         }
     }
-
-
 }

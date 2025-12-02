@@ -32,7 +32,7 @@ class GalleryViewModel: ViewModel(){
                     10,
                     5
                 )
-                UiState = GalleryUiState.Success(listResults)
+                UiState = GalleryUiState.Success("Success: ${listResults.data.size} Images retrieved")
             }catch (e: Exception)
             {
                 UiState = GalleryUiState.Error(e.message ?: "Error")

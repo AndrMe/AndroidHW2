@@ -1,6 +1,7 @@
 package com.example.hw2.network
+import com.example.hw2.data.ResponseData
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -8,7 +9,7 @@ import retrofit2.http.Query
 private const val BASE_URL = "https://api.giphy.com/v1/gifs/"
 
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(GsonConverterFactory.create())
     .baseUrl(BASE_URL)
     .build()
 
@@ -24,6 +25,6 @@ interface GalleryApiService {
         @Query("api_key") apiKey: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
-    ): String
+    ): ResponseData
 
 }

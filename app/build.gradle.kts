@@ -76,6 +76,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation(libs.androidx.ui)
 
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-gif:2.7.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

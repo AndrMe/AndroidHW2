@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -19,12 +22,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.hw2.R
+import com.example.hw2.data.GiphyImage
 import com.example.hw2.ui.theme.HW2Theme
 
 
@@ -35,10 +42,7 @@ fun DisplayGallery(state: GalleryUiState,
 ) {
     when (state){
         is GalleryUiState.Success ->
-            Text(
-                text = "Recieved ${state.photos}!",
-                modifier = modifier
-            )
+           GalleryScreen(state)
         is GalleryUiState.Error ->
             ErrorScreen(modifier,viewModel)
         is GalleryUiState.Loading ->
@@ -46,6 +50,33 @@ fun DisplayGallery(state: GalleryUiState,
     }
 
 }
+
+@Composable
+fun GalleryScreen(state: GalleryUiState.Success, modifier: Modifier = Modifier){
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3)
+    ) {
+        items(state.photos){
+            photo ->
+            MyCell(photo)
+        }
+    }
+}
+
+@Composable
+fun MyCell(
+    item: GiphyImage
+)
+{
+    AsyncImage(
+        model = item.images.downsized.url,
+        contentDescription = item.title,
+        modifier = Modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth,
+    )
+}
+
+
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier ){
     Box(

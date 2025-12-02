@@ -6,12 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hw2.BuildConfig
+import com.example.hw2.data.GiphyImage
 import com.example.hw2.network.GalleryApi
 import kotlinx.coroutines.launch
 
 
 sealed interface GalleryUiState{
-    data class Success(val photos: String): GalleryUiState
+    data class Success(val photos: List<GiphyImage>): GalleryUiState
     object Loading: GalleryUiState
     data class Error(val error: String): GalleryUiState
 }
@@ -32,7 +33,7 @@ class GalleryViewModel: ViewModel(){
                     10,
                     5
                 )
-                UiState = GalleryUiState.Success("Success: ${listResults.data.size} Images retrieved")
+                UiState = GalleryUiState.Success(listResults.data)
             }catch (e: Exception)
             {
                 UiState = GalleryUiState.Error(e.message ?: "Error")

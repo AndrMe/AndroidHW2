@@ -79,7 +79,7 @@ fun GalleryScreen(
                 isLoadingTriggered = true
                 viewModel.loadAdditional()
             }
-            if (!state.isLoadingMore) {
+            if (!state.isLoadingMore && !state.loadingFailed) {
                 isLoadingTriggered = false
             }
         }
@@ -106,7 +106,7 @@ fun GalleryScreen(
             }
         }
         if (state.loadingFailed) {
-            item(span = { GridItemSpan(maxLineSpan) }, key = -1,) {
+            item(span = { GridItemSpan(maxLineSpan) }, key = "errorKey",) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -131,8 +131,8 @@ fun GalleryScreen(
             }
         }
     }
-
 }
+
 
 @Composable
 fun RetryButton(

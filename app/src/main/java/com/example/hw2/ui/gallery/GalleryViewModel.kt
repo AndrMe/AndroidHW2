@@ -66,9 +66,9 @@ class GalleryViewModel: ViewModel(){
                         limit = 20,
                         offset = state.photos.size
                     )
-
-                UiState = state.copy(
-                    photos = state.photos + data.data,
+                val newState = UiState as GalleryUiState.Success
+                UiState = newState.copy(
+                    photos = newState.photos + data.data,
                     isLoadingMore = false,
                     loadingFailed = false
                 )

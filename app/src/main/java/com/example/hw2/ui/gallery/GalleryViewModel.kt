@@ -10,16 +10,21 @@ import com.example.hw2.network.GalleryApi
 import kotlinx.coroutines.launch
 
 
+sealed interface GalleryUiState{
+    data class Success(val photos: String): GalleryUiState
+    object Loading: GalleryUiState
+    data class Error(val error: String): GalleryUiState
+}
 
 class GalleryViewModel: ViewModel(){
-    var UiState: String by mutableStateOf("")
+    var UiState: GalleryUiState by mutableStateOf(GalleryUiState.Loading)
         private  set
 
     init {
         getPhotos()
     }
 
-    private fun getPhotos() {
+     fun getPhotos() {
         viewModelScope.launch {
             try {
                 val listResults = GalleryApi.galleryService.getTrendingPhotos(
@@ -27,10 +32,10 @@ class GalleryViewModel: ViewModel(){
                     10,
                     5
                 )
-                UiState = listResults
+                UiState = GalleryUiState.Success(listResults)
             }catch (e: Exception)
             {
-                UiState = e.message ?: "Error"
+                UiState = GalleryUiState.Error(e.message ?: "Error")
             }
         }
     }

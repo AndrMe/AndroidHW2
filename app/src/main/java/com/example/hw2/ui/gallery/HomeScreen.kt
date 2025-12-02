@@ -15,6 +15,6 @@ fun MainScreen(name: String, modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize()
     ) {
         val viewModel: GalleryViewModel = viewModel()
-        Greeting(viewModel.UiState, modifier)
+        DisplayGallery(viewModel.UiState, modifier, viewModel)
     }
 }

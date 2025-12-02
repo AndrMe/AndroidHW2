@@ -1,6 +1,8 @@
 package com.example.hw2.ui.gallery
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -31,6 +34,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -86,8 +90,8 @@ fun GalleryScreen(
         columns = GridCells.Fixed(3),
         modifier = modifier.fillMaxSize()
     ) {
-        items(items = state.photos, key = { it.id }) { photo ->
-            MyCell(item  = photo)
+        itemsIndexed(state.photos, key = { index, item -> item.id }) { index, photo ->
+            MyCell(item = photo, id = index)
         }
         if (state.isLoadingMore) {
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -102,7 +106,7 @@ fun GalleryScreen(
             }
         }
         if (state.loadingFailed) {
-            item(span = { GridItemSpan(maxLineSpan) }, key = "loadingFailed",) {
+            item(span = { GridItemSpan(maxLineSpan) }, key = -1,) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -129,15 +133,25 @@ fun GalleryScreen(
 
 @Composable
 fun MyCell(
-    item: GiphyImage
+    item: GiphyImage,
+    id: Int
 ) {
+    val notifText = stringResource(R.string.NotifText, id, item.title)
+    val context = LocalContext.current
     Card {
         AsyncImage(
             model = item.images.downsized.url,
             contentDescription = item.title,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f),
+                .aspectRatio(1f)
+                .clickable {
+                    Toast.makeText(
+                        context,
+                        notifText,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
             contentScale = ContentScale.Crop
         )
     }

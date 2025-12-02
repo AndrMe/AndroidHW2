@@ -8,6 +8,7 @@
     <string name="reloadText">Retry?</string>
     <string name="TopBar">Loaded: %d</string>
     <string name="uiErrorMsg">Error</string>
+    <string name="NotifText">Number: %d, Name: %s</string>
 
 
 </resources>

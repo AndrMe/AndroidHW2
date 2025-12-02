@@ -71,15 +71,15 @@ fun GalleryScreen(
 
     var isLoadingTriggered by remember { mutableStateOf(false) }
 
-    LaunchedEffect(gridState, state.photos.size, state.isLoadingMore) {
+    LaunchedEffect(gridState, state.photos.size, state.isLoadingMore, state.loadingFailed) {
         snapshotFlow {
             gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
         }.collect { lastVisible ->
-            if (lastVisible >= state.photos.size - 1 && !state.isLoadingMore && !isLoadingTriggered) {
+            if ( !state.loadingFailed && lastVisible >= state.photos.size - 1 && !state.isLoadingMore && !isLoadingTriggered) {
                 isLoadingTriggered = true
                 viewModel.loadAdditional()
             }
-            if (!state.isLoadingMore) {
+            if (!state.isLoadingMore && !state.loadingFailed) {
                 isLoadingTriggered = false
             }
         }
@@ -106,7 +106,7 @@ fun GalleryScreen(
             }
         }
         if (state.loadingFailed) {
-            item(span = { GridItemSpan(maxLineSpan) }, key = -1,) {
+            item(span = { GridItemSpan(maxLineSpan) }, key = "errorKey",) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -123,12 +123,33 @@ fun GalleryScreen(
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Spacer(modifier = Modifier.height(8.dp))
+                        RetryButton(
+                            { viewModel.loadAdditional() }
+                        )
                     }
                 }
             }
         }
     }
+}
 
+
+@Composable
+fun RetryButton(
+
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+){
+    Button(
+        modifier = modifier.size(256.dp, 64.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(R.string.reloadText),
+            modifier = Modifier.padding(8.dp),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
@@ -179,13 +200,6 @@ fun ErrorScreen(modifier: Modifier = Modifier, viewModel: GalleryViewModel) {
             contentDescription = stringResource(R.string.initialLoadDesc)
         )
         Text(text = stringResource(R.string.initialLoadFailure), modifier = Modifier.padding(16.dp))
-        Button(
-            modifier = Modifier.size(256.dp, 64.dp),
-            onClick = {
-                viewModel.retry()
-            }
-        ) {
-            Text(text = stringResource(R.string.reloadText), modifier = Modifier.padding(2.dp), textAlign = TextAlign.Center)
-        }
+        RetryButton({viewModel.retry()})
     }
 }

@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
             HW2Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

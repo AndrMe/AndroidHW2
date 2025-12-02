@@ -15,17 +15,17 @@ import com.example.hw2.R
 
 
 @Composable
-fun MainScreen(name: String, modifier: Modifier = Modifier) {
+fun MainScreen( modifier: Modifier = Modifier) {
     val viewModel: GalleryViewModel = viewModel()
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopBarLoadedCount(viewModel.UiState)
         }
     ) { innerPadding ->
         DisplayGallery(
             state = viewModel.UiState,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             viewModel = viewModel

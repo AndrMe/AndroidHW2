@@ -112,7 +112,8 @@ fun GalleryScreen(
                         .fillMaxWidth()
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
-                ) {
+                )
+                {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -132,7 +133,6 @@ fun GalleryScreen(
         }
     }
 }
-
 
 @Composable
 fun RetryButton(

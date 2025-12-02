@@ -123,17 +123,9 @@ fun GalleryScreen(
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            modifier = Modifier.size(256.dp, 64.dp),
-                            onClick = {
-                                viewModel.loadAdditional()
-
-                            }
-                        ) {
-                            RetryButton(
-                                 { viewModel.loadAdditional() }
-                            )
-                        }
+                        RetryButton(
+                            { viewModel.loadAdditional() }
+                        )
                     }
                 }
             }

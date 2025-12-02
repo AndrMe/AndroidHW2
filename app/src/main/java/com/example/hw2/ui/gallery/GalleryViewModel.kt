@@ -57,9 +57,7 @@ class GalleryViewModel: ViewModel(){
         val state = UiState
         if (state !is GalleryUiState.Success) return
         if (state.isLoadingMore) return
-
         UiState = state.copy(isLoadingMore = true)
-
         viewModelScope.launch {
             try {
                 val data = GalleryApi.galleryService
@@ -78,7 +76,7 @@ class GalleryViewModel: ViewModel(){
             } catch (e: Exception) {
                 UiState = state.copy(isLoadingMore = false)
                 if (UiState is GalleryUiState.Success){
-                    UiState = state.copy(loadingFailed = true)
+                    UiState = state.copy(loadingFailed = true, isLoadingMore = false)
                 }
 
             }

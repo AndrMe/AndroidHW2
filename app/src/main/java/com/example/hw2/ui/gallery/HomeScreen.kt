@@ -9,14 +9,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hw2.R
 
 
 @Composable
-fun MainScreen( modifier: Modifier = Modifier) {
-    val viewModel: GalleryViewModel = viewModel()
+fun MainScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val viewModel: GalleryViewModel = viewModel(
+        factory = GalleryViewModel.Factory(context)
+    )
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
